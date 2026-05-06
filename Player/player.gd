@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 var movement_speed = 40.0
+var hp = 80
 @onready var sprite = $Sprite2D
 # walkTimer is set as unique path for referencing, rather than calling upon the node within the player
 @onready var walkTimer = get_node("%walkTimer")
@@ -36,3 +37,8 @@ func movement():
 	# add speed to make movement. Normalization is to stop making diagonal movement faster than a grid movement
 	velocity = mov.normalized()*movement_speed
 	move_and_slide() # what makes the character move
+
+
+func _on_hurt_box_hurt(damage):	
+	hp -= damage
+	print(hp)
