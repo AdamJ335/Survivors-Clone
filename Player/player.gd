@@ -1,6 +1,9 @@
 extends CharacterBody2D
 
 var movement_speed = 40.0
+@onready var sprite = $Sprite2D
+# walkTimer is set as unique path for referencing, rather than calling upon the node within the player
+@onready var walkTimer = get_node("%walkTimer")
 
 # primary game loop, updates on every single physics frame. 
 # Delta is 1 second divided by framerate. Stops movement speed being tied with framerate
@@ -15,6 +18,21 @@ func movement():
 	
 	# determines direction of movement
 	var mov = Vector2(x_mov, y_mov)
+	
+	# face left or right animation
+	if mov.x > 0:
+		sprite.flip_h = true
+	if mov.x < 0:
+		sprite.flip_h = false
+	
+	if mov != Vector2.ZERO:
+		if walkTimer.is_stopped():
+			if sprite.frame >= sprite.hframes - 1: # hframe start at 1 and frame start at 0
+				sprite.frame = 0
+			else:
+				sprite.frame = 1
+			walkTimer.start()
+	
 	# add speed to make movement. Normalization is to stop making diagonal movement faster than a grid movement
 	velocity = mov.normalized()*movement_speed
 	move_and_slide() # what makes the character move
