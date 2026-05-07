@@ -21,6 +21,8 @@ func _on_area_entered(area: Area2D):
 						area.tempdisable()
 			var damage = area.damage
 			emit_signal("hurt", damage)
+			if area.has_method("enemy_hit"):
+				area.enemy_hit(1)
 
 
 # reset after cooldown timer runs out
