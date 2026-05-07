@@ -5,7 +5,9 @@ extends Area2D
 @onready var collision = $CollisionShape2D
 @onready var disableTimer = $DisableTimer
 
-signal hurt(damage)
+signal hurt(damage, angle, knockback)
+
+var hit_once_array = [] # holds all attacks that have already hit
 
 func _on_area_entered(area: Area2D):
 	if area.is_in_group("attack"):
@@ -15,15 +17,31 @@ func _on_area_entered(area: Area2D):
 					collision.call_deferred("set", "disabled", true)
 					disableTimer.start()
 				1: #HitOnce
-					pass
+					if hit_once_array.has(area) == false: # have we already hit this before?
+						hit_once_array.append(area) # put it in the list to say we hit it
+						if area.has_signal("remove_from_array"):
+							if not area.is_connected("remove_from_array", Callable(self, "remove_from_list")):
+								area.connect("remove_from_array", Callable(self, "remove_from_list"))
+					else:
+						return
 				2: #DisableHitBox
 					if area.has_method("tempdisable"):
 						area.tempdisable()
 			var damage = area.damage
-			emit_signal("hurt", damage)
+			var angle = Vector2.ZERO
+			var knockback = 1
+			if not area.get("angle") == null:
+				angle = area.angle
+			if not area.get("knockback_amount") == null:
+				knockback = area.knockback_amount
+			
+			emit_signal("hurt", damage, angle, knockback)
 			if area.has_method("enemy_hit"):
 				area.enemy_hit(1)
 
+func remove_from_list(object):
+	if hit_once_array.has(object):
+		hit_once_array.erase(object)
 
 # reset after cooldown timer runs out
 func _on_disable_timer_timeout():

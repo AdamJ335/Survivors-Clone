@@ -52,6 +52,8 @@ unique_name_in_owner = true
 wait_time = 0.075
 
 [node name="EnemyDetectionArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetectionArea"]
 light_mask = 4
