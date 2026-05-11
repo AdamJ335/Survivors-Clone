@@ -53,7 +53,7 @@ func death():
 	
 	#spawn experience gem
 	var new_gem = exp_gem.instantiate()
-	new_gem.global_positoin = global_position
+	new_gem.global_position = global_position
 	new_gem.experience = experience
 	loot_base.call_deferred("add_child", new_gem)
 	

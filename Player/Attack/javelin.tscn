@@ -24,7 +24,6 @@ light_mask = 4
 visibility_layer = 4
 position = Vector2(4.76837e-07, 0)
 rotation = -0.785398
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_83qy7")
 disabled = true
 

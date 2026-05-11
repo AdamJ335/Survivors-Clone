@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://70fpiphf8ejo"]
+[gd_scene load_steps=13 format=3 uid="uid://70fpiphf8ejo"]
 
 [ext_resource type="Script" uid="uid://dcypahl2osxjg" path="res://Player/player.gd" id="1_4ntmi"]
 [ext_resource type="Texture2D" uid="uid://um877p1mjcju" path="res://Textures/Player/player_sprite.png" id="1_l8h54"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://tv3al2d36osj" path="res://Textures/GUI/exp_background.png" id="4_fhl08"]
 [ext_resource type="Texture2D" uid="uid://b8fwculq3r6dg" path="res://Textures/GUI/exp_progress.png" id="5_vtle1"]
 [ext_resource type="FontFile" uid="uid://wxmujvv3kvpu" path="res://Font/tenderness.otf" id="6_od3ui"]
+[ext_resource type="AudioStream" uid="uid://d0hegxtshug2v" path="res://Audio/SoundEffect/levelup.ogg" id="7_vtle1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4ntmi"]
 radius = 3.0
@@ -120,6 +121,39 @@ theme_override_font_sizes/font_size = 16
 text = "Level: 1"
 horizontal_alignment = 1
 vertical_alignment = 2
+
+[node name="LevelUp" type="Panel" parent="GUILayer/GUI"]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+layout_mode = 0
+offset_left = 220.0
+offset_top = 50.0
+offset_right = 420.0
+offset_bottom = 300.0
+scale = Vector2(0.1, 0.1)
+
+[node name="lbl_levelUp" type="Label" parent="GUILayer/GUI/LevelUp"]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 50.0
+theme_override_fonts/font = ExtResource("6_od3ui")
+text = "Level Up!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UpgradeOptions" type="VBoxContainer" parent="GUILayer/GUI/LevelUp"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 10.0
+offset_top = 50.0
+offset_right = 190.0
+offset_bottom = 100.0
+
+[node name="snd_levelup" type="AudioStreamPlayer" parent="GUILayer/GUI/LevelUp"]
+unique_name_in_owner = true
+stream = ExtResource("7_vtle1")
+volume_db = -15.0
 
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
 [connection signal="timeout" from="Attack/IceSpearTimer" to="." method="_on_ice_spear_timer_timeout"]

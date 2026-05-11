@@ -46,6 +46,10 @@ var enemy_close = []
 #GUI
 @onready var expBar = get_node("%ExperienceBar")
 @onready var lblLevel = get_node("%lbl_level")
+@onready var lvlPanel = get_node("%LevelUp")
+@onready var upgradeOptions = get_node("%UpgradeOptions")
+@onready var sndLevelUp = get_node("%snd_levelup")
+@onready var itemOptions = preload("res://Utility/item_option.tscn")
 
 func _ready():
 	attack()
@@ -167,7 +171,6 @@ func _on_grab_area_area_entered(area: Area2D) -> void:
 
 func _on_collect_area_area_entered(area: Area2D) -> void:
 	if area.is_in_group("loot"):
-		print("Were gonna collect the Loot!")
 		var gem_exp = area.collect() # returns experience value
 		calculate_exp(gem_exp)
 
@@ -180,7 +183,7 @@ func calculate_exp(gem_exp):
 		lblLevel.text = str("Level: ", experience_level)
 		experience = 0
 		exp_required = calculate_exp_cap() # Recalculate new level cap
-		calculate_exp(0) # recursive call on excess exp
+		LevelUp()
 	else:
 		experience += collected_exp
 		collected_exp = 0
@@ -200,3 +203,29 @@ func calculate_exp_cap():
 func set_expbar(set_value = 1, set_max_value = 100):
 	expBar.value = set_value
 	expBar.max_value = set_max_value
+
+func LevelUp():
+	sndLevelUp.play()
+	lblLevel.text = str("Level: ", experience_level)
+	var tween = lvlPanel.create_tween()
+	tween.tween_property(lvlPanel, "scale", Vector2.ONE, 0.2)\
+		.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	tween.play()
+	lvlPanel.visible = true
+	var options = 0
+	var optionsmax = 3
+	while options < optionsmax:
+		var option_choice = itemOptions.instantiate()
+		upgradeOptions.add_child(option_choice)
+		options += 1
+	get_tree().paused = true # Pauses game
+	
+func upgrade_character(upgrade):
+	#item selected, clear down options and play game
+	var option_children = upgradeOptions.get_children()
+	for i in option_children:
+		i.queue_free()
+	lvlPanel.visible = false
+	lvlPanel.scale = Vector2.ZERO
+	get_tree().paused = false 
+	calculate_exp(0) # add any excess after upgrade

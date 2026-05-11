@@ -32,6 +32,5 @@ func collect():
 	sprite.visible = false
 	return experience
 
-
 func _on_snd_collected_finished():
 	queue_free()
