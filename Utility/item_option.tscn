@@ -30,6 +30,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("1_gcekk")
 
 [node name="lbl_description" type="Label" parent="."]
+layout_mode = 0
 offset_left = 4.0
 offset_top = 27.0
 offset_right = 166.0
@@ -41,6 +42,7 @@ text = "Description of item
 autowrap_mode = 3
 
 [node name="lbl_level" type="Label" parent="."]
+layout_mode = 0
 offset_left = 130.0
 offset_top = 3.0
 offset_right = 170.0

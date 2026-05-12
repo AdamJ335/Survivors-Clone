@@ -22,4 +22,4 @@ region_rect = Rect2(0, 0, 4000, 4000)
 
 [node name="ExperienceGem" parent="Loot" instance=ExtResource("4_3f78f")]
 position = Vector2(-52, -28)
-experience = 10
+experience = 500
