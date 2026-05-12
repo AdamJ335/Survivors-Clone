@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://70fpiphf8ejo"]
+[gd_scene load_steps=15 format=3 uid="uid://70fpiphf8ejo"]
 
 [ext_resource type="Script" uid="uid://dcypahl2osxjg" path="res://Player/player.gd" id="1_4ntmi"]
 [ext_resource type="Texture2D" uid="uid://um877p1mjcju" path="res://Textures/Player/player_sprite.png" id="1_l8h54"]
@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://b8fwculq3r6dg" path="res://Textures/GUI/exp_progress.png" id="5_vtle1"]
 [ext_resource type="FontFile" uid="uid://wxmujvv3kvpu" path="res://Font/tenderness.otf" id="6_od3ui"]
 [ext_resource type="AudioStream" uid="uid://d0hegxtshug2v" path="res://Audio/SoundEffect/levelup.ogg" id="7_vtle1"]
+[ext_resource type="Texture2D" uid="uid://c6ld4yikcytju" path="res://Textures/GUI/healthbar.png" id="8_00tjw"]
+[ext_resource type="Texture2D" uid="uid://dc3abe4hxlwf6" path="res://Textures/GUI/health.png" id="9_x3vf3"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4ntmi"]
 radius = 3.0
@@ -122,16 +124,40 @@ text = "Level: 1"
 horizontal_alignment = 1
 vertical_alignment = 2
 
+[node name="HealthBar" type="TextureProgressBar" parent="GUILayer/GUI"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.392157)
+layout_mode = 0
+offset_left = 304.0
+offset_top = 200.0
+offset_right = 336.0
+offset_bottom = 208.0
+texture_over = ExtResource("8_00tjw")
+texture_progress = ExtResource("9_x3vf3")
+
+[node name="lblTimer" type="Label" parent="GUILayer/GUI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 280.0
+offset_top = 20.0
+offset_right = 360.0
+offset_bottom = 44.0
+theme_override_fonts/font = ExtResource("6_od3ui")
+theme_override_font_sizes/font_size = 20
+text = "00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="LevelUp" type="Panel" parent="GUILayer/GUI"]
 unique_name_in_owner = true
 process_mode = 2
-visible = false
 layout_mode = 0
-offset_left = 310.0
-offset_top = 167.0
-offset_right = 510.0
-offset_bottom = 417.0
-scale = Vector2(0.1, 0.1)
+offset_left = 220.0
+offset_top = 500.0
+offset_right = 420.0
+offset_bottom = 750.0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(100, 125)
 
 [node name="lbl_levelUp" type="Label" parent="GUILayer/GUI/LevelUp"]
 layout_mode = 0
@@ -154,6 +180,24 @@ offset_bottom = 100.0
 unique_name_in_owner = true
 stream = ExtResource("7_vtle1")
 volume_db = -15.0
+
+[node name="CollectedWeapons" type="GridContainer" parent="GUILayer/GUI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 208.0
+offset_bottom = 40.0
+columns = 10
+
+[node name="CollectedUpgrades" type="GridContainer" parent="GUILayer/GUI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 40.0
+offset_right = 208.0
+offset_bottom = 56.0
+columns = 10
 
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
 [connection signal="timeout" from="Attack/IceSpearTimer" to="." method="_on_ice_spear_timer_timeout"]
