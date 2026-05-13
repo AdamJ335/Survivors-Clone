@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://covjylc3d8ibp"]
+
+[ext_resource type="Script" uid="uid://csjanecj1cen" path="res://Enemy/enemy.gd" id="1_x8knb"]
+[ext_resource type="Texture2D" uid="uid://byo0rogxku1l7" path="res://Textures/Enemy/giant_amoeba_new.png" id="2_x8knb"]
+[ext_resource type="PackedScene" uid="uid://o4ijtwe3sm8f" path="res://Utility/hurt_box.tscn" id="3_fvfjj"]
+[ext_resource type="PackedScene" uid="uid://drmm57uoxat22" path="res://Utility/hit_box.tscn" id="4_qj31s"]
+[ext_resource type="AudioStream" uid="uid://bprckhnfckwo3" path="res://Audio/SoundEffect/enemy_hit.ogg" id="5_lc1sa"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_px1sc"]
+radius = 5.0
+height = 18.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eqilm"]
+size = Vector2(150, 124)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ncf7h"]
+size = Vector2(76, 91)
+
+[node name="enemy_super" type="CharacterBody2D"]
+collision_layer = 5
+collision_mask = 5
+motion_mode = 1
+script = ExtResource("1_x8knb")
+movement_speed = 150.0
+hp = 99999
+knockback_recovery = 99999.0
+experience = 200
+damage = 20
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(5, 5)
+texture = ExtResource("2_x8knb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_px1sc")
+disabled = true
+
+[node name="HurtBox" parent="." instance=ExtResource("3_fvfjj")]
+collision_layer = 4
+collision_mask = 4
+HurtBoxType = 1
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_eqilm")
+
+[node name="HitBox" parent="." instance=ExtResource("4_qj31s")]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" parent="HitBox" index="0"]
+position = Vector2(-6, 10.5)
+shape = SubResource("RectangleShape2D_ncf7h")
+
+[node name="snd_hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_lc1sa")
+volume_db = -20.0
+area_mask = 5
+
+[connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
+
+[editable path="HurtBox"]
+[editable path="HitBox"]
