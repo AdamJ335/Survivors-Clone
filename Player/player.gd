@@ -58,6 +58,14 @@ var enemy_close = []
 @onready var collectedUpgrades = get_node("%CollectedUpgrades")
 @onready var itemContainer = preload("res://Player/GUI/item_container.tscn")
 
+@onready var deathPanel = get_node("%DeathPanel")
+@onready var lblResult = get_node("%lbl_Result")
+@onready var sndVictory = get_node("%snd_victory")
+@onready var sndLose = get_node("%snd_lose")
+
+#Signals
+signal playerDeath
+
 #UPGRADES
 var collected_upgrades = [] # All collected throughout run
 var upgrade_options = [] # Upgrades on offer
@@ -121,6 +129,25 @@ func _on_hurt_box_hurt(damage, _angle, _knockback):
 	hp -= clamp(damage-armor, 1.0, 999.0)
 	healthBar.max_value = maxhp
 	healthBar.value = hp
+	if hp <= 0:
+		death()
+
+func death():
+	deathPanel.visible = true
+	emit_signal("playerDeath")
+	get_tree().paused = true
+	var tween = deathPanel.create_tween().set_parallel(true)
+	tween.tween_property(deathPanel, "scale", Vector2.ONE, 0.5)\
+		.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	tween.tween_property(deathPanel, "position", Vector2(220,50), 1)\
+		.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	tween.play()
+	if time >= 300:
+		lblResult.text = "You Win!"
+		sndVictory.play()
+	else:
+		lblResult.text = "You Lose"
+		sndLose.play()
 
 # Loading ammo
 func _on_ice_spear_timer_timeout():
@@ -358,3 +385,7 @@ func adjust_gui_collection(upgrade):
 					collectedWeapons.add_child(new_item)
 				"upgrade":
 					collectedUpgrades.add_child(new_item)
+
+func _on_btn_menu_click_end() -> void:
+	get_tree().paused = false
+	var _level = get_tree().change_scene_to_file("res://Title Screen/menu.tscn")

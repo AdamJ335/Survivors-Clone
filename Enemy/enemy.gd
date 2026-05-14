@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var hp = 10
 @export var knockback_recovery = 3.5
 @export var experience = 1
-@export var damage = 1
+@export var enemy_damage = 1
 var knockback = Vector2.ZERO
 
 # var gets values after all nodes loaded. Used to reference nodes
@@ -23,7 +23,7 @@ signal remove_from_array(object)
 
 func _ready():
 	anim.play("walk")
-	hitBox.damage = damage
+	hitBox.damage = enemy_damage
 
 func _physics_process(_delta):
 	knockback = knockback.move_toward(Vector2.ZERO, knockback_recovery)
